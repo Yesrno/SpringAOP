@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="acounts" class="Dao.Acount">
+		<property name="id" value="201741412125"/>
+		<property name="type" value="在线课堂"/>
+		<property name="status" value="在线" />
+		<property name="banlance" value="1000" /> 
+	</bean>
+	<bean id="Person" class="Dao.Person">
+		<property name="id" value="@12345"/>
+		<property name="name" value="范文杰"/>
+		<property name="birth" value="1998-11-23" />
+		<property name="acount" ref="acounts" /> 
+	</bean>
+	<bean id="myAspect" class="aspect.MyAspect" /> 	
+	<aop:config>
+		<aop:aspect ref="myAspect">
+			<aop:pointcut expression ="execution(* Dao.*.service(..))" id="myPointCut" />
+			<aop:before method="before" pointcut-ref="myPointCut" />
+			<aop:after-returning method="afterReturning" pointcut-ref="myPointCut" />
+			<aop:around method="around" pointcut-ref="myPointCut" />
+			<aop:after-throwing method="except" pointcut-ref="myPointCut" throwing="e"/>
+			<aop:after method="after" pointcut-ref="myPointCut" /> 
+		</aop:aspect> 	
+	</aop:config>
+</beans>
